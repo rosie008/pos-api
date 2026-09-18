@@ -10,5 +10,6 @@ public class RequestNewProductDTO {
     private String name;
     private BigDecimal price;
     private Long stock;
+    private String sku;
     private EProductCategory productCategory;
 }

@@ -15,6 +15,7 @@ public class NewProductMapper {
                 .price(request.getPrice())
                 .stock(request.getStock())
                 .productCategory(request.getProductCategory())
+                .sku(request.getSku())
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
                 .build();

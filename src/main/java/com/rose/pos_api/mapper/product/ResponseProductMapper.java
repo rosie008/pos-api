@@ -13,6 +13,7 @@ public class ResponseProductMapper {
                 .name(product.getName())
                 .price(product.getPrice())
                 .productCategory(product.getProductCategory())
+                .sku(product.getSku())
                 .stock(product.getStock())
                 .build();
     }

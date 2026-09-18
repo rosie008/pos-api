@@ -33,6 +33,9 @@ public class Product implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Column(name = "sku", nullable = false)
+    private String sku;
+
     @Column(name = "price", nullable = false)
     private BigDecimal price;
 
