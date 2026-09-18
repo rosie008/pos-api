@@ -10,7 +10,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "product")
+@Table(name = "product", schema = "master")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,9 +20,13 @@ public class Product implements Serializable {
     @SequenceGenerator(
             name = "product_seq_gen",
             sequenceName = "product_seq",
+            schema = "master",
             allocationSize = 1
     )
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "product_seq_gen")
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "product_seq_gen"
+    )
     private Long id;
 
     @Column(name = "name", nullable = false)
