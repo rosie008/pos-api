@@ -1,0 +1,14 @@
+package com.rose.pos_api.dto.request.product;
+
+import com.rose.pos_api.statval.enumeration.EProductCategory;
+import lombok.Data;
+
+import java.math.BigDecimal;
+
+@Data
+public class RequestNewProductDTO {
+    private String name;
+    private BigDecimal price;
+    private Long stock;
+    private EProductCategory productCategory;
+}

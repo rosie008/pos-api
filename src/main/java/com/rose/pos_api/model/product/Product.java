@@ -2,18 +2,19 @@ package com.rose.pos_api.model.product;
 
 import com.rose.pos_api.statval.enumeration.EProductCategory;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "product", schema = "master")
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Product implements Serializable {
 
     @Id
@@ -41,5 +42,11 @@ public class Product implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(name = "category", nullable = false)
     private EProductCategory productCategory;
+
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at", nullable = false)
+    private LocalDateTime updatedAt;
 
 }
