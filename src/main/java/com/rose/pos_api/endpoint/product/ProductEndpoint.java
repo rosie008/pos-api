@@ -8,10 +8,9 @@ import lombok.RequiredArgsConstructor;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/product")
@@ -25,6 +24,20 @@ public class ProductEndpoint {
         try {
             ResponseProductDTO response = productService.addNewProduct(requestNewProductDTO);
             return ResponseEntity.ok(response);
+        } catch (ServiceException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/{id}")
+    private ResponseEntity<?> findById(@PathVariable("id") Long id) {
+        try {
+            ResponseProductDTO response = productService.findById(id);
+            if (Objects.nonNull(response)) {
+                return ResponseEntity.ok(response);
+            }
+            return ResponseEntity.noContent().build();
         } catch (ServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(e.getMessage());

@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Service
 @RequiredArgsConstructor
 public class ProductService {
@@ -20,9 +22,18 @@ public class ProductService {
     private final ResponseProductMapper responseProductMapper;
 
     @Transactional
-    public ResponseProductDTO addNewProduct(RequestNewProductDTO requestNewProductDTO)throws ServiceException {
+    public ResponseProductDTO addNewProduct(RequestNewProductDTO requestNewProductDTO) throws ServiceException {
         Product product = newProductMapper.convert(requestNewProductDTO);
         return responseProductMapper.convert(productRepository.save(product));
+    }
+
+    public ResponseProductDTO findById(Long id) {
+        Product product = productRepository.findById(id).orElse(null);
+        if (Objects.nonNull(product)) {
+            return responseProductMapper.convert(product);
+        }
+
+        return null;
     }
 
 
