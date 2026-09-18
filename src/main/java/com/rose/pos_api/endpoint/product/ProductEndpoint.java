@@ -1,6 +1,7 @@
 package com.rose.pos_api.endpoint.product;
 
 import com.rose.pos_api.dto.request.product.RequestNewProductDTO;
+import com.rose.pos_api.dto.request.product.RequestUpdateProductDTO;
 import com.rose.pos_api.dto.response.product.ResponseProductDTO;
 import com.rose.pos_api.service.ProductService;
 import jakarta.validation.Valid;
@@ -38,6 +39,31 @@ public class ProductEndpoint {
                 return ResponseEntity.ok(response);
             }
             return ResponseEntity.noContent().build();
+        } catch (ServiceException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateProduct(@PathVariable("id") Long id, @Valid @RequestBody RequestUpdateProductDTO requestUpdateProductDTO) {
+        try {
+            ResponseProductDTO response = productService.updateProduct(id, requestUpdateProductDTO);
+            if (Objects.nonNull(response)) {
+                return ResponseEntity.ok(response);
+            }
+            return ResponseEntity.noContent().build();
+        } catch (ServiceException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteById(@PathVariable("id") Long id) {
+        try {
+            productService.deleteById(id);
+            return ResponseEntity.ok().build();
         } catch (ServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(e.getMessage());
