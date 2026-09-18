@@ -23,6 +23,12 @@ public class ProductService {
 
     @Transactional
     public ResponseProductDTO addNewProduct(RequestNewProductDTO requestNewProductDTO) throws ServiceException {
+
+        if (productRepository.existsBySku(requestNewProductDTO.getSku())) {
+            throw new ServiceException(String.format("Item with SKU %s already exists!", requestNewProductDTO.getSku())
+            );
+        }
+
         Product product = newProductMapper.convert(requestNewProductDTO);
         return responseProductMapper.convert(productRepository.save(product));
     }
