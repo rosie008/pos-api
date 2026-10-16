@@ -16,8 +16,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -29,12 +27,7 @@ import java.util.List;
 public class SecurityConfig {
 
     @Bean
-    PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    SecurityFilterChain securityFilterChain(
+    public SecurityFilterChain securityFilterChain(
             HttpSecurity http,
             AuthService authService) throws Exception {
 
@@ -53,7 +46,7 @@ public class SecurityConfig {
                     return;
                 }
 
-                String token = header = header.substring(7).trim();
+                String token = header.substring(7).trim();
                 if (token.isEmpty()) {
                     response.sendError(HttpStatus.UNAUTHORIZED.value(), "Bearer token is empty");
                     return;
@@ -75,9 +68,9 @@ public class SecurityConfig {
                             userId, null, authorities);
 
                     SecurityContextHolder.getContext().setAuthentication(authentication);
-                }catch (JwtException | IllegalArgumentException ex){
+                } catch (JwtException | IllegalArgumentException ex) {
                     SecurityContextHolder.clearContext();
-                    response.sendError(HttpStatus.UNAUTHORIZED.value(), "Token are invalid or expired");
+                    response.sendError(HttpStatus.UNAUTHORIZED.value(), "Token is invalid or expired");
                     return;
                 }
 
@@ -91,15 +84,11 @@ public class SecurityConfig {
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/login").permitAll()
-                        .requestMatchers("/api/auth/**", "/error").permitAll()
+                        .requestMatchers("/api/auth/**", "/error", "/swagger-ui/**", "/swagger-ui.html", "/api-docs/**").permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
-
     }
-
 }
-;
