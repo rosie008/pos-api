@@ -4,6 +4,7 @@ import com.rose.pos_api.dto.request.auth.RequestLoginDTO;
 import com.rose.pos_api.dto.response.auth.ResponseLoginDTO;
 import com.rose.pos_api.model.user.User;
 import com.rose.pos_api.repository.IUserRepository;
+import com.rose.pos_api.statval.constant.PosConstants;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -21,15 +22,15 @@ import java.util.Date;
 public class AuthService {
 
     private final SecretKey signingKey;
-    private final long expirationMillis = 15 * 60 * 1000; // 15 minutes
-    private final String issuer = "https://auth.rose.com";
-    private final String audience = "https://api.rose.com";
+    private final long expirationMillis = PosConstants.JWT_EXPIRATION;
+    private final String issuer = PosConstants.JWT_ISSUER;
+    private final String audience = PosConstants.JWT_AUDIENCE;
 
     private final IUserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
     public AuthService(
-            @Value("${JWT_SECRET}") String secretBase64,
+            @Value("${jwt.key}") String secretBase64,
             IUserRepository userRepository,
             PasswordEncoder passwordEncoder
     ) {
